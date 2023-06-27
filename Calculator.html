@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashos Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
+
+    .calculator {
+      width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    .result-field {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 20px;
+      text-align: right;
+    }
+
+    .button {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      font-size: 20px;
+      background-color: #eee;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .operator {
+      background-color: #f8a026;
+      color: #fff;
+    }
+
+    .text {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .history {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .easter-egg {
+      font-size: 18px;
+      color: #ff0000;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input id="resultField" class="result-field" readonly>
+    <div>
+      <button class="button" onclick="appendNumber('1')">1</button>
+      <button class="button" onclick="appendNumber('2')">2</button>
+      <button class="button" onclick="appendNumber('3')">3</button>
+      <button class="button operator" onclick="appendOperator('+')">+</button>
+    </div>
+    <div>
+      <button class="button" onclick="appendNumber('4')">4</button>
+      <button class="button" onclick="appendNumber('5')">5</button>
+      <button class="button" onclick="appendNumber('6')">6</button>
+      <button class="button operator" onclick="appendOperator('-')">-</button>
+    </div>
+    <div>
+      <button class="button" onclick="appendNumber('7')">7</button>
+      <button class="button" onclick="appendNumber('8')">8</button>
+      <button class="button" onclick="appendNumber('9')">9</button>
+      <button class="button operator" onclick="appendOperator('*')">*</button>
+    </div>
+    <div>
+      <button class="button" onclick="appendNumber('0')">0</button>
+      <button class="button operator" onclick="appendOperator('.')">.</button>
+      <button class="button operator" onclick="calculate()">=</button>
+      <button class="button operator" onclick="appendOperator('/')">/</button>
+    </div>
+    <button class="button" onclick="clearResult()">Сбросить</button>
+    <div class="history" id="history"></div>
+    <div class="text">Dashos, 2023</div>
+    <div class="easter-egg" id="easterEgg"></div>
+  </div>
+
+  <script>
+    const resultField = document.getElementById('resultField');
+    const historyDiv = document.getElementById('history');
+    const easterEggDiv = document.getElementById('easterEgg');
+
+    let easterEggEnabled = true;
+
+    function appendNumber(number) {
+      resultField.value += number;
+    }
+
+    function appendOperator(operator) {
+      resultField.value += operator;
+    }
+
+    function calculate() {
+      try {
+        const expression = resultField.value;
+        const result = eval(expression);
+        if (result === Infinity || isNaN(result)) {
+          throw new Error('На ноль делить нельзя');
+        }
+        resultField.value = result;
+
+        const historyItem = document.createElement('div');
+        historyItem.textContent = expression + ' = ' + result;
+        historyDiv.appendChild(historyItem);
+
+        if (expression === '666:90*35*90:35' && easterEggEnabled) {
+          easterEggDiv.textContent = 'Попробуйте Microsoft';
+        } else {
+          easterEggDiv.textContent = '';
+        }
+      } catch (error) {
+        resultField.value = 'Ошибка';
+      }
+    }
+
+    function clearResult() {
+      resultField.value = '';
+    }
+
+    function toggleEasterEgg() {
+      easterEggEnabled = !easterEggEnabled;
+      if (easterEggEnabled) {
+        easterEggDiv.style.display = 'block';
+      } else {
+        easterEggDiv.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
